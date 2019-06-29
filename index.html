@@ -65,6 +65,10 @@
                                 <Icon @click.native="collapsedSider" class="menu-toggle" :class="rotateIcon" :style="{margin: '0'}"
                                     type="md-menu" size="24"></Icon>
                             </div>
+                            <div class="layout-logo">
+                                <Icon @click.native="refresh" class="menu-toggle" :class="rotateIcon" :style="{margin: '0'}"
+                                    type="md-sync" size="24"></Icon>
+                            </div>
                             <div class="layout-nav" :style="{width: (isCollapsed ? 390 : 500) + 'px'}">
                                 <menu-item name="1" title="内容管理">
                                     内容管理
@@ -89,6 +93,7 @@
                                         <menu-item name="3-4">用户留存</menu-item>
                                         <menu-item name="3-5">流失用户</menu-item>
                                     </menu-group>
+                                    <menu-item name="user-logout" @click.native="handleLogoutClick()">登出</menu-item>
                                 </Submenu>
                             </div>
                         </i-menu>
@@ -118,9 +123,10 @@
                                 </dropdown-menu>
                             </Dropdown>
 
+                            <!-- 全部的tabs -->
                             <tab-pane v-for="(tab,index) in tabs" :key="tab" :label="tab.label" :icon="tab.icon" :name="tab.name"
                                 :closable="tab.closable">
-                                <iframe :src="tab.href" style="border:none;width:100%;" frameborder="0" :height="frameHeight"
+                                <iframe :ref="tab.name" :src="tab.href" style="border:none;width:100%;" frameborder="0" :height="frameHeight"
                                     marginheight="0" scrolling="auto" marginwidth="0"></iframe>
                             </tab-pane>
                         </tabs>
@@ -162,7 +168,7 @@
                         title: "用户及授权", name: "1", icon: "md-list", menuItem: [
                             /*第三集的菜单的*/
                             {title: "用户管理", name: "1-10", icon: "md-list", menuItem: [
-                                { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true }
+                                { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-add", closable: true }
                             ]},
 
                             // { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true },
@@ -407,6 +413,20 @@
                 findNextTab: function () {
                     var index = this.findNextTabIndex();
                     return this.tabs[index];
+                },
+                /*登出的*/
+                handleLogoutClick:function(){
+                    localStorage.removeItem("dnc_token");
+                    var token = localStorage.getItem("dnc_token");                    
+                    if (!token) {
+                        window.location.href = "login.html";
+                    }
+                },
+                /*刷新当前的tab*/
+                refresh:function(){
+                    var target = this;
+                    var name = target.currentTab.name;
+                    target.$refs[name][0].contentWindow.location.reload(!0);
                 }
             }
         });

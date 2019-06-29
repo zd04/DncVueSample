@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>用户管理</title>
+    <title>商品列表的</title>
     <link rel="stylesheet" type="text/css" href="../../../assets/iview/iview-3.1.0/styles/iview.css" />
     <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
     <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
@@ -29,7 +29,7 @@
             </Radio-group>
         </div>
         <i-table :border="showBorder" :stripe="showStripe" :show-header="showHeader" :height="fixedHeader ? 300 : ''"
-            :size="tableSize" :data="tableData3" :columns="tableColumns3" v-on:on-row-dblclick="dblclick"></i-table>
+            :size="tableSize" :data="tableData3" :columns="tableColumns3"></i-table>
     </div>
     <script type="text/javascript">
         var vm = new Vue({
@@ -167,20 +167,9 @@
                     });
                     return columns;
                 }
-            },
-            methods:{
-                dblclick:function(data,index){
-                    console.log(data);
-                    console.log(index);
-
-                    if(window.self !== window.top){
-                        var goods = { label: "商品管理", name: "4-1", href: "pages/goods/goods/info.html", icon: "md-list", closable: true };
-                        goods.name = goods.href;
-                        window.parent.vm.handleMenuClick(goods);
-                    }
-                }
             }
         });
     </script>
 </body>
+
 </html>
