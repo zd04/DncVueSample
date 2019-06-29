@@ -31,15 +31,33 @@
                                     <span :title="submenu.title">{{submenu.title}}</span>
                                 </template>
                                 <template v-for="item in submenu.menuItem">
+                                    <!-- 菜单的 -->
+                                    <template v-if="!!item.menuItem && item.menuItem.length > 0">
+                                        <submenu :name="item.name">
+                                            <template slot="title">
+                                                <Icon :type="item.icon"></Icon>
+                                                <span :title="item.title">{{item.title}}</span>
+                                            </template>
+                                            <template v-for="item1 in item.menuItem">
+                                                <menu-item :name="item1.name" @click.native="handleMenuClick(item1)" :style="{paddingLeft:(!isCollapsed?43:25)+'px'}">
+                                                    <Icon :type="item1.icon"></Icon>
+                                                    <span :title="item1.label">{{item1.label}}</span>
+                                                </menu-item>
+                                            </template>
+                                        </submenu>
+                                    </template>
+                                    <template v-else>
                                     <menu-item :name="item.name" @click.native="handleMenuClick(item)" :style="{paddingLeft:(!isCollapsed?43:25)+'px'}">
                                         <Icon :type="item.icon"></Icon>
                                         <span :title="item.label">{{item.label}}</span>
                                     </menu-item>
+                                    </template>
                                 </template>
                             </submenu>
                         </template>
                     </i-menu>
                 </Sider>
+
                 <Layout>
                     <i-header :style="{position: 'fixed', width: '100%'}" class="layout-header-bar">
                         <i-menu mode="horizontal" theme="dark" active-name="1">
@@ -57,6 +75,7 @@
                                 <menu-item name="4">
                                     综合设置
                                 </menu-item>
+
                                 <Submenu name="3">
                                     <template slot="title">
                                         我的
@@ -74,6 +93,7 @@
                             </div>
                         </i-menu>
                     </i-header>
+
                     <i-content :style="mainContentHeight">
                         <tabs :type="tab.type" closable v-show="tabs.length>0" :value="currentTab.name" :animated="true"
                             @on-click="handleTabClicked" @on-tab-remove="handleTabRemoved">
@@ -92,11 +112,12 @@
                                     <dropdown-item name="close-others">
                                         <Icon type="md-arrow-forward"></Icon> 关闭其他
                                     </dropdown-item>
-                                    <dropdown-item name="switch-tab-type" divided>
+<!--                                     <dropdown-item name="switch-tab-type" divided>
                                         <Icon type="md-swap"></Icon> 切换模式
-                                    </dropdown-item>
+                                    </dropdown-item> -->
                                 </dropdown-menu>
                             </Dropdown>
+
                             <tab-pane v-for="(tab,index) in tabs" :key="tab" :label="tab.label" :icon="tab.icon" :name="tab.name"
                                 :closable="tab.closable">
                                 <iframe :src="tab.href" style="border:none;width:100%;" frameborder="0" :height="frameHeight"
@@ -128,7 +149,7 @@
                     height: 300
                 },
                 tab: {
-                    type: "line" //可选值:line,card
+                    type: "card" //可选值:line,card
                 },
                 currentTab: {
                     index: 0,
@@ -138,14 +159,20 @@
                 isCollapsed: false,
                 menu: [
                     {
-                        title: "用户及授权", name: "1", icon: "logo-apple", menuItem: [
-                            { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "logo-apple", closable: false },
-                            { label: "资源管理", name: "1-2", href: "pages/account/resource/list.html", icon: "logo-windows", closable: true },
-                            { label: "角色管理", name: "1-3", href: "pages/account/role/list.html", icon: "logo-tux", closable: true }
+                        title: "用户及授权", name: "1", icon: "md-list", menuItem: [
+                            /*第三集的菜单的*/
+                            {title: "用户管理", name: "1-10", icon: "md-list", menuItem: [
+                                { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true }
+                            ]},
+
+                            // { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true },
+                            { label: "资源管理", name: "1-2", href: "pages/account/resource/list.html", icon: "md-list", closable: true },
+                            { label: "角色管理", name: "1-3", href: "pages/account/role/list.html", icon: "md-list", closable: true }
                         ]
                     },
+
                     {
-                        title: "系统管理", name: "2", icon: "logo-windows", menuItem: [
+                        title: "系统管理", name: "2", icon: "md-list", menuItem: [
                             { label: "权限管理", name: "2-1", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
                             { label: "组织机构", name: "2-2", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
                             { label: "角色管理", name: "2-3", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
@@ -163,9 +190,9 @@
                         ]
                     },
                     {
-                        title: "统计分析", name: "3", icon: "logo-tux", menuItem: [
-                            { label: "用户活跃度", name: "3-1", href: "pages/statistics/user/active.html", icon: "logo-apple", closable: true },
-                            { label: "销售报表", name: "3-2", href: "pages/statistics/sales/order.html", icon: "logo-windows", closable: true }
+                        title: "统计分析", name: "3", icon: "md-list", menuItem: [
+                            { label: "用户活跃度", name: "3-1", href: "pages/statistics/user/active.html", icon: "md-list", closable: true },
+                            { label: "销售报表", name: "3-2", href: "pages/statistics/sales/order.html", icon: "md-list", closable: true }
                         ]
                     }
                 ],
@@ -199,8 +226,13 @@
             mounted() {
                 this.init();
                 window.addEventListener('resize', this.handleResize);
-                this.handleMenuClick({ label: "首页", name: "1-0", href: "./pages/default.html", icon: "md-home", closable: false });
-
+                this.handleMenuClick(
+                { label: "首页"
+                    , name: "1-0"/*这个是标签的标示的*/
+                    , href: "./pages/default.html"/*这个是链接的地址的*/
+                    , icon: "md-list"/*这个是图标的*/
+                    , closable: false 
+                });
             },
             methods: {
                 init: function () {
@@ -224,7 +256,12 @@
                     }
                 },
                 handleMenuClick(menu) {
-                    var tab = { label: menu.label, href: menu.href, icon: menu.icon, name: menu.name, closable: menu.closable };
+                    var tab = { label: menu.label
+                        , href: menu.href
+                        , icon: menu.icon
+                        , name: menu.name
+                        , closable: menu.closable 
+                    };
                     if (this.tabs.map(x => x.name).indexOf(menu.name) === -1) {
                         this.tabs.push(tab);
                     }
