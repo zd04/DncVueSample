@@ -29,7 +29,7 @@
             </Radio-group>
         </div>
         <i-table :border="showBorder" :stripe="showStripe" :show-header="showHeader" :height="fixedHeader ? 300 : ''"
-            :size="tableSize" :data="tableData3" :columns="tableColumns3" v-on:on-row-dblclick="dblclick"></i-table>
+            :size="tableSize" :data="tableData3" :columns="tableColumns3" @on-row-dblclick="dblclick" @on-row-click="show"></i-table>
     </div>
     <script type="text/javascript">
         var vm = new Vue({
@@ -96,6 +96,7 @@
                 }
             },
             computed: {
+                /*计算表头展示的列*/
                 tableColumns3() {
                     let columns = [];
                     if (this.showCheckbox) {
@@ -115,16 +116,18 @@
                     columns.push({
                         title: 'Date',
                         key: 'date',
-                        sortable: true
+                        sortable: true/*是否可以排序的??*/
                     });
                     columns.push({
                         title: 'Name',
                         key: 'name'
                     });
+
                     columns.push({
                         title: 'Age',
                         key: 'age',
                         sortable: true,
+                        /*过滤器*/
                         filters: [
                             {
                                 label: 'Greater than 25',
@@ -147,6 +150,7 @@
                     columns.push({
                         title: 'Address',
                         key: 'address',
+                        /*展示过滤器的*/
                         filters: [
                             {
                                 label: 'New York',
@@ -165,6 +169,64 @@
                             return row.address.indexOf(value) > -1;
                         }
                     });
+
+                    columns.push({
+                        title: 'Action',
+                        key: 'action',
+                        width: 200,
+                        align: 'center',
+                        /*自定义展示的*/
+                        render: (h, params) => {
+                            var btns = [];
+
+                            btns.push(h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
+                                }, '编辑'),);
+
+                            btns.push(h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },                                    
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '删除'));
+
+                            /*根据条件展示按钮的*/
+                            if(params.index > 3){
+                                btns.push(h('Button', {
+                                        props: {
+                                            type: 'error',
+                                            size: 'small'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.remove(params.index)
+                                            }
+                                        }
+                                    }, '删除22222'));
+                            }
+
+                            return h('div', btns);
+                        }
+                    });
                     return columns;
                 }
             },
@@ -178,6 +240,16 @@
                         goods.name = goods.href;
                         window.parent.vm.handleMenuClick(goods);
                     }
+                },
+                show:function(data,index){
+                    console.log(data);
+                    //console.log(this.tableData3[index]);
+                },
+                /*删除数据的*/
+                remove:function(index){
+                    console.log(this.tableData3[index]);
+                    //delete this.tableData3[index];
+                    this.tableData3.splice(index, 1);
                 }
             }
         });

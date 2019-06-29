@@ -66,7 +66,7 @@
                                     type="md-menu" size="24"></Icon>
                             </div>
                             <div class="layout-logo">
-                                <Icon @click.native="refresh" class="menu-toggle" :class="rotateIcon" :style="{margin: '0'}"
+                                <Icon @click.native="refresh" class="menu-toggle" :style="{margin: '0'}"
                                     type="md-sync" size="24"></Icon>
                             </div>
                             <div class="layout-nav" :style="{width: (isCollapsed ? 390 : 500) + 'px'}">
@@ -100,8 +100,9 @@
                     </i-header>
 
                     <i-content :style="mainContentHeight">
-                        <tabs :type="tab.type" closable v-show="tabs.length>0" :value="currentTab.name" :animated="true"
+                        <tabs :type="tab.type" closable v-show="tabs.length>0" :value="currentTab.name" :animated="false"
                             @on-click="handleTabClicked" @on-tab-remove="handleTabRemoved">
+                            <!--  -->
                             <Dropdown style="margin-left: 20px" placement="bottom-end" transfer="true" slot="extra"
                                 @on-click="handleTabDropdownClick">
                                 <i-button type="text" style="height:30px;">
@@ -112,10 +113,13 @@
                                         <Icon type="md-close"></Icon> 关闭全部
                                     </dropdown-item>
                                     <dropdown-item name="close-current">
-                                        <Icon type="ios-arrow-forward"></Icon> 关闭当前
+                                        <Icon type="ios-arrow-forward"></Icon>关闭当前
                                     </dropdown-item>
                                     <dropdown-item name="close-others">
                                         <Icon type="md-arrow-forward"></Icon> 关闭其他
+                                    </dropdown-item>
+                                    <dropdown-item name="refresh">
+                                        <Icon type="md-sync"></Icon> 刷新页面
                                     </dropdown-item>
 <!--                                     <dropdown-item name="switch-tab-type" divided>
                                         <Icon type="md-swap"></Icon> 切换模式
@@ -124,8 +128,7 @@
                             </Dropdown>
 
                             <!-- 全部的tabs -->
-                            <tab-pane v-for="(tab,index) in tabs" :key="tab" :label="tab.label" :icon="tab.icon" :name="tab.name"
-                                :closable="tab.closable">
+                            <tab-pane v-for="(tab,index) in tabs" :key="tab" :label="tab.label" :icon="tab.icon" :name="tab.name" :closable="tab.closable">
                                 <iframe :ref="tab.name" :src="tab.href" style="border:none;width:100%;" frameborder="0" :height="frameHeight"
                                     marginheight="0" scrolling="auto" marginwidth="0"></iframe>
                             </tab-pane>
@@ -141,10 +144,12 @@
         if (!token) {
             window.location.href = "login.html";
         }
+        /*消息设置的*/
         Vue.prototype.$Message.config({
             top: 10,
             duration: 3
         });
+
         var vm = new Vue({
             el: '#app',
             data: {
@@ -163,6 +168,7 @@
                     closable: true
                 },
                 isCollapsed: false,
+                /*菜单项*/
                 menu: [
                     {
                         title: "用户及授权", name: "1", icon: "md-list", menuItem: [
@@ -202,6 +208,7 @@
                         ]
                     }
                 ],
+                /*打开的全部的tab列表*/
                 tabs: [
                 ]
             },
@@ -325,6 +332,9 @@
                         case "switch-tab-type":
                             this.handleSwitchTabType();
                             break;
+                        case "refresh":
+                            this.refresh();
+                            break;
                     }
                 },
                 doRemoveTab: function (index) {
@@ -333,6 +343,9 @@
                         return;
                     }
                     this.tabs.splice(index, 1);
+                    //设置最后一个是当前的tab
+                    var tabLength = this.tabs.length;
+                    this.setCurrentTab(this.tabs[tabLength-1].name);
                 },
                 doCloseTabAll: function () {
                     for (var i = this.tabs.length - 1; i >= 0; i--) {
@@ -425,8 +438,12 @@
                 /*刷新当前的tab*/
                 refresh:function(){
                     var target = this;
-                    var name = target.currentTab.name;
-                    target.$refs[name][0].contentWindow.location.reload(!0);
+                    var name = target.currentTab.name;     
+                    target.$refs[name][0].contentWindow.location.reload(!0);     
+
+                    setTimeout(function(){
+                        target.$Message.success('刷新成功');
+                    },100); 
                 }
             }
         });
