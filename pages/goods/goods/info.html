@@ -6,13 +6,24 @@
     <meta name="viewport" content="width=device-width" />
     <title>商品列表的</title>
     <link rel="stylesheet" type="text/css" href="../../../assets/iview/iview-3.1.0/styles/iview.css" />
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/vxe-table/lib/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/style.min.css">
+
+
     <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
     <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
+
+    <!-- 引入脚本 -->
+    <script src="https://unpkg.com/xe-utils"></script>
+    <script src="https://unpkg.com/vxe-table"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/index.min.js"></script>
 </head>
 
 <body>
     <div id="app">
-        <div style="margin: 10px">
+<!--         <div style="margin: 10px">
             显示边框 <i-switch v-model="showBorder" style="margin-right: 5px"></i-switch>
             显示条纹 <i-switch v-model="showStripe" style="margin-right: 5px"></i-switch>
             显示索引 <i-switch v-model="showIndex" style="margin-right: 5px"></i-switch>
@@ -29,145 +40,72 @@
             </Radio-group>
         </div>
         <i-table :border="showBorder" :stripe="showStripe" :show-header="showHeader" :height="fixedHeader ? 300 : ''"
-            :size="tableSize" :data="tableData3" :columns="tableColumns3"></i-table>
+            :size="tableSize" :data="tableData3" :columns="tableColumns3"></i-table> -->
+
+
+        <vxe-table
+          border
+          show-overflow
+          class="vxe-table-iview"
+          height="600"
+          :loading="loading"
+          :data.sync="tableData"
+          :edit-config="{key: 'id', trigger: 'click', mode: 'cell'}">
+          <vxe-table-column type="selection" width="60"></vxe-table-column>
+          <vxe-table-column type="index" title="Number" width="80"></vxe-table-column>
+          <vxe-table-column field="name" title="Input" min-width="140" :edit-render="{name: 'Input'}"></vxe-table-column>
+          <vxe-table-column field="role" title="AutoComplete" min-width="160" :edit-render="{name: 'AutoComplete', props: {data: restaurants, filterMethod: roleFilterMethod}}"></vxe-table-column>
+          <vxe-table-column field="age" title="InputNumber" width="140" :edit-render="{name: 'InputNumber', props: {max: 35, min: 18}}"></vxe-table-column>
+          <vxe-table-column field="sex" title="Select" width="140" :edit-render="{name: 'Select', options: sexList}"></vxe-table-column>
+          <vxe-table-column field="sex1" title="Select" width="140" :edit-render="{name: 'Select', options: sexList, props: {multiple: true, clearable: true}}"></vxe-table-column>
+          <vxe-table-column field="sex2" title="Select" width="140" :edit-render="{name: 'Select', options: sexList, optionGroups: sexGroupList, props: {clearable: true}}"></vxe-table-column>
+          <vxe-table-column field="region" title="Cascader" width="200" :edit-render="{name: 'Cascader', props: {data: regionList}}"> </vxe-table-column>
+          <vxe-table-column field="date" title="DatePicker" width="200" :edit-render="{name: 'DatePicker', props: {type: 'date', format: 'yyyy/MM/dd'}}"></vxe-table-column>
+          <vxe-table-column field="date2" title="TimePicker" width="200" :edit-render="{name: 'TimePicker', props: {type: 'time'}}"></vxe-table-column>
+          <vxe-table-column field="flag" title="iSwitch" width="100" :edit-render="{name: 'iSwitch', type: 'visible'}"></vxe-table-column>
+          <vxe-table-column field="rate" title="Rate" width="200" :edit-render="{name: 'Rate', type: 'visible'}"></vxe-table-column>
+        </vxe-table>
+      
     </div>
     <script type="text/javascript">
         var vm = new Vue({
-            el: "#app",
-            data: function () {
+              el: "#app",
+              data () {
                 return {
-                    tableData3: [
+                  loading: false,
+                  tableData: [],
+                  sexList: [],
+                  regionList: [],
+                  sexGroupList: [
+                    {
+                      label: '分组1',
+                      options: [
                         {
-                            name: 'John Brown',
-                            age: 18,
-                            address: 'New York No. 1 Lake Park',
-                            date: '2016-10-03'
-                        },
-                        {
-                            name: 'Jim Green',
-                            age: 24,
-                            address: 'London No. 1 Lake Park',
-                            date: '2016-10-01'
-                        },
-                        {
-                            name: 'Joe Black',
-                            age: 30,
-                            address: 'Sydney No. 1 Lake Park',
-                            date: '2016-10-02'
-                        },
-                        {
-                            name: 'Jon Snow',
-                            age: 26,
-                            address: 'Ottawa No. 2 Lake Park',
-                            date: '2016-10-04'
-                        },
-                        {
-                            name: 'John Brown',
-                            age: 18,
-                            address: 'New York No. 1 Lake Park',
-                            date: '2016-10-03'
-                        },
-                        {
-                            name: 'Jim Green',
-                            age: 24,
-                            address: 'London No. 1 Lake Park',
-                            date: '2016-10-01'
-                        },
-                        {
-                            name: 'Joe Black',
-                            age: 30,
-                            address: 'Sydney No. 1 Lake Park',
-                            date: '2016-10-02'
-                        },
-                        {
-                            name: 'Jon Snow',
-                            age: 26,
-                            address: 'Ottawa No. 2 Lake Park',
-                            date: '2016-10-04'
+                          label: '男',
+                          value: '1'
                         }
-                    ],
-                    showBorder: true,
-                    showStripe: true,
-                    showHeader: true,
-                    showIndex: true,
-                    showCheckbox: false,
-                    fixedHeader: false,
-                    tableSize: 'default'
-                }
-            },
-            computed: {
-                tableColumns3() {
-                    let columns = [];
-                    if (this.showCheckbox) {
-                        columns.push({
-                            type: 'selection',
-                            width: 60,
-                            align: 'center'
-                        })
+                      ]
+                    },
+                    {
+                      label: '分组2',
+                      options: [
+                        {
+                          label: '女',
+                          value: '0'
+                        }
+                      ]
                     }
-                    if (this.showIndex) {
-                        columns.push({
-                            type: 'index',
-                            width: 60,
-                            align: 'center'
-                        })
-                    }
-                    columns.push({
-                        title: 'Date',
-                        key: 'date',
-                        sortable: true
-                    });
-                    columns.push({
-                        title: 'Name',
-                        key: 'name'
-                    });
-                    columns.push({
-                        title: 'Age',
-                        key: 'age',
-                        sortable: true,
-                        filters: [
-                            {
-                                label: 'Greater than 25',
-                                value: 1
-                            },
-                            {
-                                label: 'Less than 25',
-                                value: 2
-                            }
-                        ],
-                        filterMultiple: false,
-                        filterMethod(value, row) {
-                            if (value === 1) {
-                                return row.age > 25;
-                            } else if (value === 2) {
-                                return row.age < 25;
-                            }
-                        }
-                    });
-                    columns.push({
-                        title: 'Address',
-                        key: 'address',
-                        filters: [
-                            {
-                                label: 'New York',
-                                value: 'New York'
-                            },
-                            {
-                                label: 'London',
-                                value: 'London'
-                            },
-                            {
-                                label: 'Sydney',
-                                value: 'Sydney'
-                            }
-                        ],
-                        filterMethod(value, row) {
-                            return row.address.indexOf(value) > -1;
-                        }
-                    });
-                    return columns;
+                  ]
                 }
-            }
+              },
+              created () {
+                //this.tableData = window.MOCK_DATA_LIST.slice(0, 100)
+              },
+              methods: {
+                nameChangeEvent ({ row }, event) {
+                  console.log(event)
+                }
+              }
         });
     </script>
 </body>

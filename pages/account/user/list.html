@@ -29,7 +29,7 @@
             </Radio-group>
         </div>
         <i-table :border="showBorder" :stripe="showStripe" :show-header="showHeader" :height="fixedHeader ? 300 : ''"
-            :size="tableSize" :data="tableData3" :columns="tableColumns3" @on-row-dblclick="dblclick" @on-row-click="show"></i-table>
+            :size="tableSize" :data="tableData3" :columns="tableColumns3" @on-row-dblclick="dblclick"></i-table>
     </div>
     <script type="text/javascript">
         var vm = new Vue({
@@ -242,8 +242,12 @@
                     }
                 },
                 show:function(data,index){
-                    console.log(data);
+                    //console.log(data);
                     //console.log(this.tableData3[index]);
+                    
+                    /**/
+                    console.log('show');
+                    //window.parent.vm.handleTopMenuClick("");
                 },
                 /*删除数据的*/
                 remove:function(index){

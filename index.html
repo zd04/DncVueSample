@@ -60,7 +60,7 @@
 
                 <Layout>
                     <i-header :style="{position: 'fixed', width: '100%'}" class="layout-header-bar">
-                        <i-menu mode="horizontal" theme="dark" active-name="1">
+                        <i-menu mode="horizontal" ref="myTopMenu" theme="dark" active-name="1" @on-select="handleTopMenuClick">
                             <div class="layout-logo">
                                 <Icon @click.native="collapsedSider" class="menu-toggle" :class="rotateIcon" :style="{margin: '0'}"
                                     type="md-menu" size="24"></Icon>
@@ -444,6 +444,10 @@
                     setTimeout(function(){
                         target.$Message.success('刷新成功');
                     },100); 
+                },
+                handleTopMenuClick:function(name){
+                    console.log('handleTopMenuClick');
+                    console.log(name);
                 }
             }
         });
