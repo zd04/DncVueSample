@@ -247,6 +247,9 @@
                     
                     /**/
                     console.log('show');
+                    var user = { label: "用户管理", name: "4-1", href: "pages/account/user/info.html", icon: "md-list", closable: true };
+                    user.name = user.href;
+                    window.parent.vm.handleMenuClick(user);
                     //window.parent.vm.handleTopMenuClick("");
                 },
                 /*删除数据的*/

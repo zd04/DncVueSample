@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户管理</title>
+    <link rel="stylesheet" type="text/css" href="../../../assets/iview/iview-3.1.0/styles/iview.css" />
+
+    <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
+    <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+    <!-- <Row> -->
+
+<!--         <i-col span="24">
+                    <div>内联表单的</div>
+        <i-form ref="formInline" :model="formInline" :rules="ruleInline" inline>
+        <FormItem prop="user">
+            <Input type="text" v-model="formInline.user" placeholder="Username">
+                <Icon type="ios-person-outline" slot="prepend"></Icon>
+            </Input>
+        </FormItem>
+        <FormItem prop="password">
+            <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Icon type="ios-lock-outline" slot="prepend"></Icon>
+            </Input>
+        </FormItem>
+        <FormItem>
+            <Button type="primary" @click="handleSubmit('formInline')">Signin</Button>
+        </FormItem>
+        </i-form>
+
+        </i-col> -->
+<!--         <i-col span="24">
+            <Card style="width:320px"> -->
+                    <div>动态表单的</div>
+        <i-form @submit.native.prevent ref="formDynamic" :model="formDynamic" :label-width="80" style="width: 300px">
+            <form-item
+                    v-for="(item, index) in formDynamic.items"
+                    v-if="item.status"
+                    :key="index"
+                    :label="'Item ' + item.index"
+                    :prop="'items.' + index + '.value'"
+                    :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
+                <Row>
+                    <i-col span="18">
+                        <i-input type="text" v-model="item.value" placeholder="Enter something..."></i-input>
+                    </i-col>
+                    <i-col span="4" offset="1">
+                        <i-button @click="handleRemove(index)">Delete</i-button>
+                    </i-col>
+                </Row>
+            </form-item>
+            <form-item>
+                <Row>
+                    <i-col span="12">
+                        <i-button type="dashed" long @click="handleAdd" icon="md-add">Add item</i-button>
+                    </i-col>
+                </Row>
+            </form-item>
+            <form-item>
+                <i-button type="primary" @click="handleSubmit('formDynamic')">Submit</i-button>
+                <i-button @click="handleReset('formDynamic')" style="margin-left: 8px">Reset</i-button>
+            </form-item>
+        </i-form>
+<!--         </Card>
+        </i-col>
+    </Row> -->
+
+
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app",
+            data () {
+                return {
+                    index: 1,
+                    formDynamic: {
+                        items: [
+                            {
+                                value: '',
+                                index: 1,
+                                status: 1
+                            }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                handleSubmit (name) {
+                    var target = this;
+                    target.$refs[name].validate(function(valid){
+                        if (valid) {
+                            target.$Message.success('Success!');
+                        } else {
+                            target.$Message.error('Fail!');
+                        }
+                    })
+                },
+                handleReset (name) {
+                    console.log(name+"handleReset");
+                    this.$refs[name].resetFields();
+                },
+                handleAdd () {
+                    this.index++;
+                    this.formDynamic.items.push({
+                        value: '',
+                        index: this.index,
+                        status: 1
+                    });
+                },
+                handleRemove (index) {
+                    this.formDynamic.items[index].status = 0;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
