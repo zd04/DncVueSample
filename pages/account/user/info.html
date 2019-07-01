@@ -91,6 +91,8 @@
             <form-item>
                 <i-button type="primary" @click="handleSubmit('formDynamic')">Submit</i-button>
                 <i-button @click="handleReset('formDynamic')" style="margin-left: 8px">Reset</i-button>
+
+                <i-button @click="fillData('formDynamic')" style="margin-left: 8px">fillData</i-button>
             </form-item>
         </i-form>
 <!--         </Card>
@@ -136,7 +138,7 @@
                         var data = JSON.parse(JSON.stringify(target.formDynamic));
 
                             console.log(data);
-                axios.post('/pages/json/ok.json', data)
+                    axios.post('/pages/json/ok.json', data)
                   .then(function (response) {
                     console.log(response);
                   })
@@ -162,6 +164,7 @@
                     this.$refs[name].resetFields();
                 },
                 handleAddTpl (){
+                    console.log(this.index);
                     this.index ++;
                     this.keyIndex[this.index] = 1;
 
@@ -192,6 +195,27 @@
                 },
                 handleRemove (index0,index) {
                     this.formDynamic[index0].items[index].status = 0;
+                },
+
+                /*模拟填充数据的*/
+                fillData (name){
+                    var  target = this;
+                  axios.get('/pages/json/filldata.json')
+                  .then(function (response) {
+                    console.log(response);
+
+                    target.formDynamic = response.data;
+                    target.index = response.data.length;
+                    for(var i in response.data){
+                        target.keyIndex[i] = response.data[i].items.length;
+                    }
+
+                    console.log(target.keyIndex);
+
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
                 }
             }
         });

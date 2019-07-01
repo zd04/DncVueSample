@@ -1,0 +1,52 @@
+[
+{
+"status": 1,
+"items": [
+{
+"value": "001",
+"index": 1,
+"status": 1
+},
+{
+"value": "002",
+"index": 2,
+"status": 1
+},
+{
+"value": "003",
+"index": 3,
+"status": 1
+},
+{
+"value": "004",
+"index": 4,
+"status": 1
+}
+]
+},
+{
+"status": 1,
+"items": [
+{
+"value": "001",
+"index": 1,
+"status": 1
+},
+{
+"value": "002",
+"index": 2,
+"status": 1
+},
+{
+"value": "003",
+"index": 3,
+"status": 1
+},
+{
+"value": "004",
+"index": 4,
+"status": 1
+}
+]
+}
+]
