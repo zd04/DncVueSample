@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="./css/index.css" />
     <script src="./assets/vue/vue-2.5.17.min.js"></script>
     <script src="./assets/iview/iview-3.1.0/iview.min.js"></script>
+
     <script src="./assets/axios/axios.min.js"></script>
 </head>
 
@@ -170,43 +171,43 @@
                 isCollapsed: false,
                 /*菜单项*/
                 menu: [
-                    {
-                        title: "用户及授权", name: "1", icon: "md-list", menuItem: [
-                            /*第三集的菜单的*/
-                            {title: "用户管理", name: "1-10", icon: "md-list", menuItem: [
-                                { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-add", closable: true }
-                            ]},
+                    // {
+                    //     title: "用户及授权", name: "1", icon: "md-list", menuItem: [
+                    //         /*第三集的菜单的*/
+                    //         {title: "用户管理", name: "1-10", icon: "md-list", menuItem: [
+                    //             { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-add", closable: true }
+                    //         ]},
 
-                            // { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true },
-                            { label: "资源管理", name: "1-2", href: "pages/account/resource/list.html", icon: "md-list", closable: true },
-                            { label: "角色管理", name: "1-3", href: "pages/account/role/list.html", icon: "md-list", closable: true }
-                        ]
-                    },
+                    //         // { label: "用户管理", name: "1-1", href: "pages/account/user/list.html", icon: "md-list", closable: true },
+                    //         { label: "资源管理", name: "1-2", href: "pages/account/resource/list.html", icon: "md-list", closable: true },
+                    //         { label: "角色管理", name: "1-3", href: "pages/account/role/list.html", icon: "md-list", closable: true }
+                    //     ]
+                    // },
 
-                    {
-                        title: "系统管理", name: "2", icon: "md-list", menuItem: [
-                            { label: "权限管理", name: "2-1", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "组织机构", name: "2-2", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "角色管理", name: "2-3", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "基础设置", name: "2-4", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "指标类别", name: "2-5", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "用户管理", name: "2-6", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "模块管理", name: "2-7", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "人员导入", name: "2-8", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "流程申请", name: "2-9", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "流程监管", name: "2-10", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "发布消息", name: "2-11", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "职位管理", name: "2-12", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
-                            { label: "系数管理", name: "2-13", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
-                            { label: "系统环境", name: "2-14", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true }
-                        ]
-                    },
-                    {
-                        title: "统计分析", name: "3", icon: "md-list", menuItem: [
-                            { label: "用户活跃度", name: "3-1", href: "pages/statistics/user/active.html", icon: "md-list", closable: true },
-                            { label: "销售报表", name: "3-2", href: "pages/statistics/sales/order.html", icon: "md-list", closable: true }
-                        ]
-                    }
+                    // {
+                    //     title: "系统管理", name: "2", icon: "md-list", menuItem: [
+                    //         { label: "权限管理", name: "2-1", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "组织机构", name: "2-2", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "角色管理", name: "2-3", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "基础设置", name: "2-4", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "指标类别", name: "2-5", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "用户管理", name: "2-6", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "模块管理", name: "2-7", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "人员导入", name: "2-8", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "流程申请", name: "2-9", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "流程监管", name: "2-10", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "发布消息", name: "2-11", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "职位管理", name: "2-12", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true },
+                    //         { label: "系数管理", name: "2-13", href: "pages/basic/settings/index.html", icon: "logo-apple", closable: true },
+                    //         { label: "系统环境", name: "2-14", href: "pages/basic/settings/evn.html", icon: "logo-windows", closable: true }
+                    //     ]
+                    // },
+                    // {
+                    //     title: "统计分析", name: "3", icon: "md-list", menuItem: [
+                    //         { label: "用户活跃度", name: "3-1", href: "pages/statistics/user/active.html", icon: "md-list", closable: true },
+                    //         { label: "销售报表", name: "3-2", href: "pages/statistics/sales/order.html", icon: "md-list", closable: true }
+                    //     ]
+                    // }
                 ],
                 /*打开的全部的tab列表*/
                 tabs: [
@@ -230,8 +231,21 @@
                     return { margin: '50px 2px 0', background: '#fff', height: '100%', minHeight: docHeight + 15 + 'px' };
                 }
             },
-            ready: function () {
+            /*通过后台的接口查询数据的*/
+            created:function(){
+                var target = this;
+                axios.get('pages/json/menu.json')
+                  .then(function (response) {
+                    console.log(response.data);
+                    target.menu = JSON.parse(JSON.stringify(response.data));
 
+                    console.log(target.menu);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+            },
+            ready: function () {
             },
             beforeDestroy: function () {
                 window.removeEventListener('resize', this.handleResize)

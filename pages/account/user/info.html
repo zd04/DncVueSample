@@ -9,6 +9,7 @@
 
     <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
     <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
+    <script src="../../../assets/axios/axios.min.js"></script>
 </head>
 
 <body>
@@ -36,32 +37,57 @@
         </i-col> -->
 <!--         <i-col span="24">
             <Card style="width:320px"> -->
-                    <div>动态表单的</div>
+            <div>动态表单的</div>
         <i-form @submit.native.prevent ref="formDynamic" :model="formDynamic" :label-width="80" style="width: 300px">
             <!-- 动态表单元素的绑定到指定的formDynamic -->
+            <template v-for="(item0, index0) in formDynamic" v-if="item0.status">
+
+            <form-item prop="user">
+                <i-input type="text" v-model="formInline.user" placeholder="Username">
+                    <Icon type="ios-person-outline" slot="prepend"></Icon>
+                </i-input>
+            </form-item>
+            <form-item prop="password">
+                <i-input type="password" v-model="formInline.password" placeholder="Password">
+                    <Icon type="ios-lock-outline" slot="prepend"></Icon>
+                </i-input>
+            </form-item>
+
+            <!-- prop对应表单域 model 里的字段 -->
             <form-item
-                    v-for="(item, index) in formDynamic.items"
+                    v-for="(item, index) in item0.items"
                     v-if="item.status"
                     :key="index"
                     :label="'Item ' + item.index"
-                    :prop="'items.' + index + '.value'"
+                    :prop="index0 + '.items.' + index + '.value'"
                     :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
                 <Row>
                     <i-col span="18">
                         <i-input type="text" v-model="item.value" placeholder="Enter something..."></i-input>
                     </i-col>
                     <i-col span="4" offset="1">
-                        <i-button @click="handleRemove(index)">Delete</i-button>
+                        <i-button @click="handleRemove(index0,index)">Delete</i-button>
+                    </i-col>
+                    <i-col span="4" offset="4">
+                        <i-button @click="handleAdd(index0,index)">Add</i-button>
                     </i-col>
                 </Row>
             </form-item>
+
+            <!-- 添加一个模板的 -->
             <form-item>
                 <Row>
                     <i-col span="12">
-                        <i-button type="dashed" long @click="handleAdd" icon="md-add">Add item</i-button>
+                        <i-button type="dashed" long @click="handleAddTpl" icon="md-add">Add TPL</i-button>
+                    </i-col>
+                    <i-col span="12">
+                        <i-button type="dashed" long @click="handleRemoveTpl(index0)" icon="md-add">Remove TPL</i-button>
                     </i-col>
                 </Row>
             </form-item>
+
+            </template>
+
             <form-item>
                 <i-button type="primary" @click="handleSubmit('formDynamic')">Submit</i-button>
                 <i-button @click="handleReset('formDynamic')" style="margin-left: 8px">Reset</i-button>
@@ -79,9 +105,9 @@
         var vm = new Vue({
             el: "#app",
             data () {
-                return {
-                    index: 1,
-                    formDynamic: {
+                var formDynamic = [
+                    {
+                        status: 1,
                         items: [
                             {
                                 value: '',
@@ -89,6 +115,18 @@
                                 status: 1
                             }
                         ]
+                    }
+
+                ];
+                return {
+                    index: 1,
+                    keyIndex:[1],
+                    
+                    formDynamic: formDynamic,
+
+                    formInline: {
+                        user: '',
+                        password: ''
                     }
                 }
             },
@@ -109,16 +147,37 @@
                     console.log(name+"handleReset");
                     this.$refs[name].resetFields();
                 },
-                handleAdd () {
-                    this.index++;
-                    this.formDynamic.items.push({
+                handleAddTpl (){
+                    this.index ++;
+                    this.keyIndex[this.index] = 1;
+
+                    this.formDynamic.push({
+                        status: 1,
+                        items: [
+                            {
+                                value: '',
+                                index: 1,
+                                status: 1
+                            }
+                        ]
+                    });
+                },
+                handleRemoveTpl (index0){
+                    this.formDynamic[index0].status = 0;
+                },
+                handleAdd (index0,index) {
+                    console.log(index0);
+                    console.log(index);
+
+                    this.keyIndex[index0] ++;
+                    this.formDynamic[index0].items.push({
                         value: '',
-                        index: this.index,
+                        index: this.keyIndex[index0],
                         status: 1
                     });
                 },
-                handleRemove (index) {
-                    this.formDynamic.items[index].status = 0;
+                handleRemove (index0,index) {
+                    this.formDynamic[index0].items[index].status = 0;
                 }
             }
         });
