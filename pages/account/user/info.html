@@ -38,6 +38,7 @@
             <Card style="width:320px"> -->
                     <div>动态表单的</div>
         <i-form @submit.native.prevent ref="formDynamic" :model="formDynamic" :label-width="80" style="width: 300px">
+            <!-- 动态表单元素的绑定到指定的formDynamic -->
             <form-item
                     v-for="(item, index) in formDynamic.items"
                     v-if="item.status"
@@ -100,7 +101,9 @@
                         } else {
                             target.$Message.error('Fail!');
                         }
-                    })
+                    });
+
+                    console.log(target.formDynamic.items);
                 },
                 handleReset (name) {
                     console.log(name+"handleReset");
