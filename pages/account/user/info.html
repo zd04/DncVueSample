@@ -121,7 +121,7 @@
                 return {
                     index: 1,
                     keyIndex:[1],
-                    
+
                     formDynamic: formDynamic,
 
                     formInline: {
@@ -133,9 +133,23 @@
             methods: {
                 handleSubmit (name) {
                     var target = this;
+                        var data = JSON.parse(JSON.stringify(target.formDynamic));
+
+                            console.log(data);
+                axios.post('/pages/json/ok.json', data)
+                  .then(function (response) {
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+
                     target.$refs[name].validate(function(valid){
                         if (valid) {
                             target.$Message.success('Success!');
+
+
+
                         } else {
                             target.$Message.error('Fail!');
                         }
