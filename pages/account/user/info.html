@@ -43,12 +43,12 @@
             <template v-for="(item0, index0) in formDynamic" v-if="item0.status">
 
             <form-item prop="user">
-                <i-input type="text" v-model="formInline.user" placeholder="Username">
+                <i-input type="text" v-model="item0.user" placeholder="Username">
                     <Icon type="ios-person-outline" slot="prepend"></Icon>
                 </i-input>
             </form-item>
             <form-item prop="password">
-                <i-input type="password" v-model="formInline.password" placeholder="Password">
+                <i-input type="password" v-model="item0.password" placeholder="Password">
                     <Icon type="ios-lock-outline" slot="prepend"></Icon>
                 </i-input>
             </form-item>
@@ -110,6 +110,8 @@
                 var formDynamic = [
                     {
                         status: 1,
+                        user : '',
+                        password : '',
                         items: [
                             {
                                 value: '',
