@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>hprose-html5</title>
+    <link rel="stylesheet" type="text/css" href="../../../assets/iview/iview-3.1.0/styles/iview.css" />
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/vxe-table/lib/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/style.min.css">
+
+
+    <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
+    <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
+
+    <!-- 引入脚本 -->
+<!--     <script src="https://unpkg.com/xe-utils"></script>
+    <script src="https://unpkg.com/vxe-table"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/index.min.js"></script> -->
+
+    <script src="../../../assets/hprose-html5/hprose-html5.js"></script>
+</head>
+
+<body>
+    <div id="app">      
+    </div>
+    <script type="text/javascript">
+      
+      var client = new hprose.HttpClient("http://127.0.0.1:9002", ["hello"]);
+      client.hello("World!", function(result) {
+          console.log(result);
+      }, function(name, err) {
+          alert(err);
+      });
+    </script>
+</body>
+
+</html>
