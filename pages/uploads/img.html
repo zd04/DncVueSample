@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>hprose-html5</title>
+    <link rel="stylesheet" type="text/css" href="../../../assets/iview/iview-3.1.0/styles/iview.css" />
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/vxe-table/lib/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/style.min.css">
+
+
+    <script src="../../../assets/vue/vue-2.5.17.min.js"></script>
+    <script src="../../../assets/iview/iview-3.1.0/iview.min.js"></script>
+
+    <!-- 引入脚本 -->
+<!--     <script src="https://unpkg.com/xe-utils"></script>
+    <script src="https://unpkg.com/vxe-table"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vxe-table-plugin-iview@1.1.1/dist/index.min.js"></script> -->
+
+    <script src="../../../assets/hprose-html5/hprose-html5.js"></script>
+</head>
+
+<body>
+    <div id="app">   
+    <input type="file" id="files" name="files[]" multiple />
+    <output id="list"></output>   
+    </div>
+    <script type="text/javascript">
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+
+
+        return function(e) {
+            var sss = e.target.result;
+            var fname = theFile.name;
+            client.imgbg(fname,sss,function(result){
+                console.log(result);
+
+             var span = document.createElement('span');
+              span.innerHTML = ['<img class="thumb" src="', result,
+                                '" title="', escape(theFile.name), '"/>'].join('');
+              document.getElementById('list').insertBefore(span, null);
+
+              //imgDownload(result,"bg_"+theFile.name);
+            });
+
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+      //链接服务器的
+      // var client = new hprose.HttpClient("http://127.0.0.1:9002", ["hello"]);
+      var client = new hprose.HttpClient.create('http://127.0.0.1:9002');
+
+      client.useService(['hello','imgbg']);
+      client.ready(function(proxy) {
+            proxy.hello('world', function(result) {
+                console.log(result);
+            });
+
+            // proxy.imgbg('test.jpeg',"333",function(result){
+            //     console.log(result);
+            // },function(name,err){
+            //     console.log(err);
+            //     console.log(name);
+            // });
+      });
+
+var imgDownload = function (img, filename) {
+    // 创建隐藏的可下载链接
+    var eleLink = document.createElement('a');
+    eleLink.download = filename;
+    eleLink.style.display = 'none';
+    // 图片转base64地址
+    eleLink.href = img;
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+};
+
+
+var funDownload = function (domImg, filename, type) {
+    // 创建隐藏的可下载链接
+    var eleLink = document.createElement('a');
+    eleLink.download = filename;
+    eleLink.style.display = 'none';
+    // 图片转base64地址
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var width = domImg.naturalWidth;
+    var height = domImg.naturalHeight;
+    context.drawImage(domImg, 0, 0);
+    // 如果是PNG图片，则canvas.toDataURL('image/png')
+    var imgtype = 'image/jpeg';
+    if(type == 'jpeg'){
+        imgtype = 'image/jpeg';
+    }else  if(type == 'png'){
+        imgtype = 'image/png';
+    }
+    eleLink.href = canvas.toDataURL(imgtype);
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+};
+      // client.hello("World!", function(result) {
+      //     alert(result);
+      // }, function(name, err) {
+      //     alert(err);
+      // });
+    </script>
+</body>
+
+</html>
