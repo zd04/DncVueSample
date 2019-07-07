@@ -78,7 +78,7 @@
 
       //链接服务器的
       // var client = new hprose.HttpClient("http://127.0.0.1:9002", ["hello"]);
-      var client = new hprose.HttpClient.create('http://127.0.0.1:9002');
+      var client = new hprose.Client.create('ws://127.0.0.1:9002');
 
       client.useService(['hello','imgbg']);
       client.ready(function(proxy) {
