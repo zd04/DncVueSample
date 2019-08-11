@@ -45,9 +45,9 @@
               'modifiers: '  + s(binding.modifiers) + '<br>' +
               'vnode keys: ' + Object.keys(vnode).join(', ')
 
-            //console.log(l)
+            console.log(l)
 
-            if(binding.value == "pp"){
+            if(!binding.value){
                 //console.log("pppppppppp")
                 el.style.display = "none";
             }
@@ -133,7 +133,9 @@
                     showIndex: true,
                     showCheckbox: false,
                     fixedHeader: false,
-                    tableSize: 'default'
+                    tableSize: 'default',
+
+                    pp:0
                 }
             },
 
@@ -242,7 +244,8 @@
                                         {
                                             name:"demo",
                                             // value: ["pp","qq"]
-                                            value: "pp"
+                                            /*这里使用true和false来标示是否展示的*/
+                                            value: self["pp"]
                                         }
                                     ]
                                 }, '编辑'),);
