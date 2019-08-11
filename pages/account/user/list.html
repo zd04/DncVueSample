@@ -32,8 +32,49 @@
             :size="tableSize" :data="tableData3" :columns="tableColumns3" @on-row-dblclick="dblclick"></i-table>
     </div>
     <script type="text/javascript">
+        //自定义指令的
+        //
+        Vue.directive('demo', {
+          bind: function (el, binding, vnode) {
+            var s = JSON.stringify
+            var l =
+              'name: '       + s(binding.name) + '<br>' +
+              'value: '      + s(binding.value) + '<br>' +
+              'expression: ' + s(binding.expression) + '<br>' +
+              'argument: '   + s(binding.arg) + '<br>' +
+              'modifiers: '  + s(binding.modifiers) + '<br>' +
+              'vnode keys: ' + Object.keys(vnode).join(', ')
+
+            //console.log(l)
+
+            if(binding.value == "pp"){
+                //console.log("pppppppppp")
+                el.style.display = "none";
+            }
+          }
+        })
+
         var vm = new Vue({
             el: "#app",
+
+            created:function(){
+                // var target = this;
+                // axios.get('pages/json/menu.json')
+                //   .then(function (response) {
+                //     console.log(response.data);
+                //     target.menu = JSON.parse(JSON.stringify(response.data));
+
+                //     console.log(target.menu);
+                //   })
+                //   .catch(function (error) {
+                //     console.log(error);
+                //   });
+            },
+
+            beforeMount:function(){
+                console.log(this.directives)
+            },
+
             data: function () {
                 return {
                     tableData3: [
@@ -95,7 +136,9 @@
                     tableSize: 'default'
                 }
             },
+
             computed: {
+
                 /*计算表头展示的列*/
                 tableColumns3() {
                     let columns = [];
@@ -170,6 +213,8 @@
                         }
                     });
 
+                    /*这个就是自定义操作的列的*/
+                    var self = this;
                     columns.push({
                         title: 'Action',
                         key: 'action',
@@ -177,6 +222,7 @@
                         align: 'center',
                         /*自定义展示的*/
                         render: (h, params) => {
+
                             var btns = [];
 
                             btns.push(h('Button', {
@@ -191,9 +237,17 @@
                                         click: () => {
                                             this.show(params.index)
                                         }
-                                    }
+                                    },
+                                    directives :[
+                                        {
+                                            name:"demo",
+                                            // value: ["pp","qq"]
+                                            value: "pp"
+                                        }
+                                    ]
                                 }, '编辑'),);
 
+                            //console.log(self);
                             btns.push(h('Button', {
                                     props: {
                                         type: 'error',
@@ -206,7 +260,14 @@
                                         click: () => {
                                             this.remove(params.index)
                                         }
-                                    }
+                                    },
+                                    directives :[
+                                        {
+                                            name:"demo",
+                                            // value: ["pp","qq"]
+                                            value: "ppqq"
+                                        }
+                                    ]
                                 }, '删除'));
 
                             /*根据条件展示按钮的*/
