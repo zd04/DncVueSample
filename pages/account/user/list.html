@@ -13,7 +13,7 @@
 <body>
     <div id="app">
         <div style="margin: 10px">
-            显示边框 <i-switch v-model="showBorder" style="margin-right: 5px"></i-switch>
+            显示边框 <i-switch v-model="showBorder" style="margin-right: 5px" v-has="'testhas'"></i-switch>
             显示条纹 <i-switch v-model="showStripe" style="margin-right: 5px"></i-switch>
             显示索引 <i-switch v-model="showIndex" style="margin-right: 5px"></i-switch>
             显示多选框 <i-switch v-model="showCheckbox" style="margin-right: 5px"></i-switch>
@@ -32,8 +32,55 @@
             :size="tableSize" :data="tableData3" :columns="tableColumns3" @on-row-dblclick="dblclick"></i-table>
     </div>
     <script type="text/javascript">
+
+        /****
+        * 判断有没有指定的权限的
+        */
+        Vue.prototype.$_has = function (value) {        
+            let isExist = false;        // 获取用户按钮权限       
+            let btnPermissionsStr = sessionStorage.getItem("btnPermissions");
+
+            console.log('btnPermissionsStr');
+            console.log(btnPermissionsStr);
+
+            if (btnPermissionsStr == undefined || btnPermissionsStr == null) {            
+                return false;        
+            }        
+                
+            if (value.indexOf(btnPermissionsStr) > -1) {            
+                isExist = true;        
+            }        
+
+            return isExist;    
+
+        };
+
+        /**
+         * 自定义指令的
+         *  
+         */
+        Vue.directive('has', {
+          bind: function(el, binding) {
+                console.log(binding.value);
+
+                if (!Vue.prototype.$_has(binding.value)) {
+                    el.parentNode.removeChild(el);
+                }
+            }
+        });
+
+        var permissionsInit = {
+            created: function () {
+                console.log('permissionsInit');
+                sessionStorage.setItem("btnPermissions",['myp1','test1']);
+            }
+        };
+
+        //Vue.mixin(permissionsInit);
+
         var vm = new Vue({
             el: "#app",
+            mixins: [permissionsInit],
             data: function () {
                 return {
                     tableData3: [
@@ -220,7 +267,13 @@
                                             click: () => {
                                                 this.remove(params.index)
                                             }
-                                        }
+                                        },
+                                        directives :[
+                                            {
+                                                name:"has",
+                                                value:"test1"
+                                            }
+                                        ]
                                     }, '删除22222'));
                             }
 
