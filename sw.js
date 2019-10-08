@@ -10,33 +10,70 @@ const urlsToCache = [
 importScripts('/workbox-v4.3.1/workbox-sw.js');
 
 
-if(workbox){
+if (workbox) {
     console.log('loaded');
-}else{
+} else {
     console.log('loaded ERROR');
 }
 
 workbox.setConfig({
-  debug: false,
-  modulePathPrefix: '/workbox-v4.3.1/'
+    debug: false,
+    modulePathPrefix: '/workbox-v4.3.1/'
 });
 
 // workbox.skipWaiting();
 // workbox.clientsClaim();
 
 /*预先下载资源的*/
-workbox.precaching.precache([
-   {url: "/index4.html"
-   //,revision: "1234"
-    }
-]);
+workbox.precaching.precache([{
+    url: "/index4.html"
+    //,revision: "1234"
+}]);
 
 workbox.precaching.addRoute();
 
 
+/*自定义方法处理的，实际上是要进行替换的*/
+const handlerCb = ({ url, event, params }) => {
+    //return Promise.resolve(new Response('Hello World!'))
+console.log("0000");
+    return fetch(url).then(function(response) {
+        // 在资源请求成功后，将 image、js、css 资源加入缓存列表
+
+        if (
+
+            !response
+
+            ||
+            response.status !== 200
+
+            ||
+            !response.headers.get('Content-type').match(/image|javascript|test\/css/i)
+
+        ) {
+
+            return response;
+
+        }
+
+        var content = response.text();
+        content = content.replace("///shell.html/","/shell111111111111111.html");
+
+        
+        console.log(content);
+
+        return Promise.resolve(new Response(content));
+    })
+}
+
 workbox.routing.registerRoute(
-  new RegExp('.*\.html'),
-  new workbox.strategies.StaleWhileRevalidate()
+    new RegExp('/index4.html'),
+    handlerCb
+);
+
+workbox.routing.registerRoute(
+    new RegExp('.*\.html'),
+    new workbox.strategies.StaleWhileRevalidate()
 );
 
 

@@ -49,6 +49,8 @@
 				})
 				setUrl(r);
 			})
+		}else{
+			renderPages("");
 		}
 	}
 
@@ -60,7 +62,9 @@
 					renderPages(text);
 				})				
 			})
-		}			
+		}else{
+			renderPages("");
+		}	
 	}
 
 
