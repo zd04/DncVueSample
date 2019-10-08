@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test3</title>
+</head>
+<body>
+<!-- 使用ws的 -->
+</body>
+<script type="text/javascript">
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('/sw.js', {scope: '/'})
+        .then(registration => console.log('ServiceWorker 注册成功！作用域为: ', registration.scope))
+        .catch(err => console.log('ServiceWorker 注册失败: ', err));
+}
+</script>
+</html>
