@@ -21,12 +21,27 @@ workbox.setConfig({
     modulePathPrefix: '/workbox-v4.3.1/'
 });
 
+
+workbox.core.setCacheNameDetails({
+  prefix: 'my-app',
+  suffix: 'v3.0.4',
+  precache: 'install-time',
+  runtime: 'run-time',
+  googleAnalytics: 'ga',
+});
+
+
+
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
+
+
 // workbox.skipWaiting();
 // workbox.clientsClaim();
 
 /*预先下载资源的*/
 workbox.precaching.precache([{
-    url: "/index4.html"
+    url: "/index.html"
     //,revision: "1234"
 }]);
 
@@ -34,9 +49,12 @@ workbox.precaching.addRoute();
 
 
 /*自定义方法处理的，实际上是要进行替换的*/
-const handlerCb = ({ url, event, params }) => {
+const handlerCb = ( {url, event, params} ) => {
+  console.log("0000");
+
+  
     //return Promise.resolve(new Response('Hello World!'))
-console.log("0000");
+
     return fetch(url).then(function(response) {
         // 在资源请求成功后，将 image、js、css 资源加入缓存列表
 
@@ -57,9 +75,9 @@ console.log("0000");
         }
 
         var content = response.text();
-        content = content.replace("///shell.html/","/shell111111111111111.html");
+        //content = content.replace("///shell.html/","/shell111111111111111.html");
 
-        
+
         console.log(content);
 
         return Promise.resolve(new Response(content));
@@ -67,7 +85,7 @@ console.log("0000");
 }
 
 workbox.routing.registerRoute(
-    new RegExp('/index4.html'),
+    '/index4.html',
     handlerCb
 );
 
