@@ -7,12 +7,18 @@
 	}
 
 
-	document.querySelector('.menus').onclick = function(e){
-		var r = e.target.getAttribute('data-r')
-		if(r){  //如果没点到li上 page 是null
-			getAndRender(r)
+	//(function(){
+		if(document.querySelector('.menus')){
+			document.querySelector('.menus').onclick = function(e){
+				var r = e.target.getAttribute('data-r')
+				if(r){  //如果没点到li上 page 是null
+					getAndRender(r)
+				}
+			}
 		}
-	}
+	//})();
+
+
 
 
 	//初始化，根据 url 中 page 的值定位到对应页面，如果没设置展示第1页
@@ -72,3 +78,19 @@ function setUrl(tourl){
 	var url = location.pathname + '?r=' +  tourl
 	history.pushState({url: url, title: document.title}, document.title, url)
 }
+
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', {scope: '/'})
+              .then(function (registration) {
+                  // Registration was successful
+                  console.log(
+                      'ServiceWorker registration successful with scope: ',
+                      registration.scope
+                  );
+              })
+              .catch(function (err) {
+                  // registration failed :(
+                  console.log('ServiceWorker registration failed: ', err);
+              });
+        }
