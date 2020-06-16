@@ -12,12 +12,24 @@
 			document.querySelector('.menus').onclick = function(e){
 				var r = e.target.getAttribute('data-r')
 				if(r){  //如果没点到li上 page 是null
-					getAndRender(r)
+					//getAndRender(r)
+					ifreamRender(r);
 				}
 			}
 		}
 	//})();
 
+	function ifreamRender(r){
+		try{  
+		   var iframe = document.createElement('<iframe name="ifr"></iframe>');  
+		  }catch(e){ 
+		    var iframe = document.createElement('iframe');  
+		    iframe.name = 'ifr';  
+		 }
+
+		iframe.src = r;  
+		document.body.appendChild(iframe);
+	}
 
 
 
@@ -25,7 +37,8 @@
 	function init(){
 		var serach = location.search.replace(/^\?/,'').split('=');
 		if(serach[0] === 'r'){
-			initGetAndRender(serach[1])
+			// initGetAndRender(serach[1])
+			ifreamRender(serach[1]);
 		}else{
 			initGetAndRender('')
 		}
